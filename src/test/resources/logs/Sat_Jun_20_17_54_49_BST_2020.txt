@@ -1,3 +1,0 @@
-INFO    2020-06-20 17:54:49,234 [main] TestLogs.class.getName  - Inside Login test
-INFO    2020-06-20 17:54:52,360 [main] TestLogs.class.getName  - Login successfully executed
-INFO    2020-06-20 17:54:53,891 [main] TestLogs.class.getName  - Test execution completed

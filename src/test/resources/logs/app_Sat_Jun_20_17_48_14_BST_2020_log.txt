@@ -1,2 +1,0 @@
-INFO    2020-06-20 17:48:14,665 [main] TestLogs.class.getName  - This is the information log
-ERROR   2020-06-20 17:48:14,667 [main] TestLogs.class.getName  - This is the error log
