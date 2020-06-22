@@ -1,11 +1,12 @@
 package testcases;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import base.TestBase;
 
-public class LoginTest extends TestBase{
+public class BankManagerLoginTest extends TestBase{
 
 	
 	
@@ -13,7 +14,8 @@ public class LoginTest extends TestBase{
 	public void loginAsBankManager() throws InterruptedException {
 		log.info("Inside Login test");
 		driver.findElement(By.cssSelector(OR.getProperty("bmlBtn"))).click();
-		Thread.sleep(3000);
+		
+		Assert.assertTrue(isElementPresent(By.cssSelector(OR.getProperty("addCustBtn"))), "Login not successful");
 		
 		log.info("Login successfully executed");
 	}
