@@ -11,6 +11,7 @@ import base.TestBase;
 
 public class AddCustomerTest extends TestBase{
 
+	//params are the columns in the excel file
 	@Test (dataProvider="getData")
 	public void addCustomer(String firstName, String lastName, String postCode, String alerttext) throws InterruptedException {
 		
