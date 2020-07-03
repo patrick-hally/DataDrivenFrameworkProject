@@ -1,0 +1,6 @@
+INFO    2020-06-22 14:41:01,190 [main] devpinoyLogger  - Config file loaded.
+INFO    2020-06-22 14:41:01,190 [main] devpinoyLogger  - OR file loaded.
+INFO    2020-06-22 14:41:05,734 [main] devpinoyLogger  - Chrome launched.
+INFO    2020-06-22 14:41:08,703 [main] devpinoyLogger  - Navigated to : http://www.way2automation.com/angularjs-protractor/banking/#/login
+INFO    2020-06-22 14:41:10,969 [main] devpinoyLogger  - Inside Login test
+INFO    2020-06-22 14:41:22,066 [main] devpinoyLogger  - Test execution completed

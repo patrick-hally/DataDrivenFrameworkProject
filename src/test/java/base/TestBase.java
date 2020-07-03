@@ -16,13 +16,20 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+
 import utilities.ExcelReader;
+import utilities.ExtentManager;
+import utilities.TestUtil;
 
-
-public class TestBase{
+public class TestBase {
 
 	/*
 	 * Initialize the following
@@ -36,14 +43,16 @@ public class TestBase{
 	public static Properties OR = new Properties();
 	public static FileInputStream fis;
 	public static Logger log = Logger.getLogger("devpinoyLogger");
-	public static ExcelReader excel = new ExcelReader(System.getProperty("user.dir") + "\\src\\test\\resources\\excel\\testdata.xlsx");
+	public static ExcelReader excel = new ExcelReader(
+			System.getProperty("user.dir") + "\\src\\test\\resources\\excel\\testdata.xlsx");
 	public static WebDriverWait wait;
-	
-	
+	public ExtentReports rep = ExtentManager.getInstance();
+	public static ExtentTest test;
+
 	@BeforeSuite
 	public void setUp() {
 
-		//log setup
+		// log setup
 		Date d = new Date();
 		System.out.println(d.toString().replace(":", "_").replace(" ", "_"));
 		System.setProperty("current.date", d.toString().replace(":", "_").replace(" ", "_"));
@@ -107,22 +116,72 @@ public class TestBase{
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("implicit.wait")),
 					TimeUnit.SECONDS);
-			wait = new WebDriverWait(driver,5);
+			wait = new WebDriverWait(driver, 5);
 		}
 
 	}
-	
-	
-	//creating method for checking if element is present on screen.
+
+	// the two below methods allow for simple steps entered in test cases. No need
+	// to 'find element by' in test cases because of these.
+	public void click(String locator) {
+
+		if (locator.endsWith("_CSS")) {
+			driver.findElement(By.cssSelector(OR.getProperty(locator))).click();
+
+		} else if (locator.endsWith("_XPATH")) {
+			driver.findElement(By.xpath(OR.getProperty(locator))).click();
+
+		} else if (locator.endsWith("_ID")) {
+			driver.findElement(By.id(OR.getProperty(locator))).click();
+		}
+		test.log(LogStatus.INFO, "Clicking on : " + locator);
+	}
+
+	public void type(String locator, String value) {
+
+		if (locator.endsWith("_CSS")) {
+			driver.findElement(By.cssSelector(OR.getProperty(locator))).sendKeys(value);
+
+		} else if (locator.endsWith("_XPATH")) {
+			driver.findElement(By.xpath(OR.getProperty(locator))).sendKeys(value);
+
+		} else if (locator.endsWith("_ID")) {
+			driver.findElement(By.id(OR.getProperty(locator))).sendKeys(value);
+		}
+		test.log(LogStatus.INFO, "Typing in : " + locator + " entered value as " + value);
+	}
+
+	// creating method for checking if element is present on screen.
 	public boolean isElementPresent(By by) {
-		
+
 		try {
 			driver.findElement(by);
 			return true;
-		}catch(NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
+	
+	//code for soft assertion, so failed tests don't stop the whole thing 
+	public static void verifyEquals(String expected,String actual) throws IOException {
+		try {
+			Assert.assertEquals(actual, expected);
+		}catch(Throwable t) {
+			TestUtil.captureScreenshot();
+			//ReportNG
+			Reporter.log("<br>"+"Verification failure : "+t.getMessage()+"<br>");
+			Reporter.log("<a target=\"_blank\" href="+TestUtil.screenshotName+"><img src="+TestUtil.screenshotName+" height=200 width=200></img></a>");
+			Reporter.log("<br>");
+			Reporter.log("<br>");
+			
+			//Extent Reports
+			test.log(LogStatus.FAIL, "Verification failed with exception : "+t.getMessage());
+			test.log(LogStatus.FAIL, test.addScreenCapture(TestUtil.screenshotName));
+		}
+	}
+	
+	
+	
 
 	@AfterSuite
 	public void tearDown() {
