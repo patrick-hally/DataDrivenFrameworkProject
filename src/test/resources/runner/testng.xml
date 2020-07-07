@@ -12,14 +12,21 @@
 	<test name="Bank Manager Login Test">
 		<classes>
 			<class name="testcases.BankManagerLoginTest" />
-			<class name="base.TestBase" />
+		<!--  	<class name="base.TestBase" />-->
 		</classes>
 	</test> <!-- Test -->
 	
 		<test name="Add Customer Test">
 		<classes>
 			<class name="testcases.AddCustomerTest" />
-			<class name="base.TestBase" />
+			<!--  	<class name="base.TestBase" />-->
+		</classes>
+	</test> <!-- Test -->
+	
+	<test name="Open Account Test">
+		<classes>
+			<class name="testcases.OpenAccountTest" />
+		<!--  	<class name="base.TestBase" />-->
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

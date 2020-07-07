@@ -12,9 +12,11 @@ import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -121,8 +123,10 @@ public class TestBase {
 
 	}
 
-	// the two below methods allow for simple steps entered in test cases. No need
+	// the below methods allow for simple steps entered in test cases. No need
 	// to 'find element by' in test cases because of these.
+	
+	//code for clicking
 	public void click(String locator) {
 
 		if (locator.endsWith("_CSS")) {
@@ -137,6 +141,7 @@ public class TestBase {
 		test.log(LogStatus.INFO, "Clicking on : " + locator);
 	}
 
+	//code for typing text
 	public void type(String locator, String value) {
 
 		if (locator.endsWith("_CSS")) {
@@ -151,6 +156,28 @@ public class TestBase {
 		test.log(LogStatus.INFO, "Typing in : " + locator + " entered value as " + value);
 	}
 
+	// code for selecting from dropdown
+	static WebElement dropdown;
+	
+	public void select(String locator, String value) {
+		if (locator.endsWith("_CSS")) {
+			dropdown = driver.findElement(By.cssSelector(OR.getProperty(locator)));
+
+		} else if (locator.endsWith("_XPATH")) {
+			dropdown = driver.findElement(By.xpath(OR.getProperty(locator)));
+
+		} else if (locator.endsWith("_ID")) {
+			dropdown = driver.findElement(By.id(OR.getProperty(locator)));
+		}
+		Select select = new Select(dropdown);
+		select.selectByVisibleText(value);
+		
+		test.log(LogStatus.INFO, "Selecting from dropdown : " + locator + " value as " + value);
+	}
+
+	
+	
+	
 	// creating method for checking if element is present on screen.
 	public boolean isElementPresent(By by) {
 
