@@ -7,6 +7,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.SkipException;
 
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -55,12 +56,18 @@ public class CustomListeners extends TestBase implements ITestListener{
 		}
 
 		public void onTestSkipped(ITestResult arg0) {
-			// TODO Auto-generated method stub
+			test.log(LogStatus.SKIP, arg0.getName().toUpperCase()+" Skipped the test as the runmode is N");
+			rep.endTest(test);
+			rep.flush();
 		}
 
 
 		public void onTestStart(ITestResult arg0) {
            test = rep.startTest(arg0.getName().toUpperCase());
+           //runmodes - Y
+           if(!TestUtil.isTestRunnable(arg0.getName(), excel)) {
+        	   throw new SkipException("Skipping the test"+arg0.getName().toUpperCase()+" as the Run Mode is N");
+           }
 		}
 
 		public void onTestSuccess(ITestResult arg0) {

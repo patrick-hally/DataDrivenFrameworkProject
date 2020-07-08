@@ -11,7 +11,7 @@ import base.TestBase;
 public class BankManagerLoginTest extends TestBase {
 
 	@Test
-	public void loginAsBankManager() throws InterruptedException, IOException {
+	public void bankManagerLoginTest() throws InterruptedException, IOException {
 
 		// soft assertion
 		// - allows test to keep running after failure
