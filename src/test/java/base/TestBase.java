@@ -16,6 +16,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -50,6 +51,7 @@ public class TestBase {
 	public static WebDriverWait wait;
 	public ExtentReports rep = ExtentManager.getInstance();
 	public static ExtentTest test;
+	public static String browser;
 
 	@BeforeSuite
 	public void setUp() {
@@ -92,11 +94,27 @@ public class TestBase {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+			//code for setting browser to the browser that is selected in Jenkins
+			if(System.getenv("browser")!=null && !System.getenv("browser").isEmpty()) {
+				browser = System.getenv("browser");
+				
+			}else {
+				browser = config.getProperty("browser");
+			}
+			config.setProperty("browser",  browser);
+			//line 105 end of code for setting browser set up in Jenkins. If not needed, comment out line 99-105.
 
 			if (config.getProperty("browser").equals("firefox")) {
 
-				// System.setProperty("webdriver.gecko.driver", "gecko.exe")
+				 System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\geckodriver.exe");
 				driver = new FirefoxDriver();
+				// FirefoxOptions options = new FirefoxOptions();
+				 //options.setCapability("marionette", false);
+				 //driver = new FirefoxDriver(options);
+				 System.out.println("Firefox launched");
+				log.info("Firefox launched");
 
 			} else if (config.getProperty("browser").equals("chrome")) {
 
